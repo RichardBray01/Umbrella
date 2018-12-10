@@ -1,5 +1,6 @@
 import "./css/main.css";
 import * as signalR from "@aspnet/signalr";
+import * as Konva from "konva";
 
 const divMessages: HTMLDivElement = document.querySelector("#divMessages");
 const tbMessage: HTMLInputElement = document.querySelector("#tbMessage");
