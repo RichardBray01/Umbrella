@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SignalRWebPack.Hubs;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +17,8 @@ namespace SignalRWebPack
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
+            services.AddHostedService<Scavenger>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -25,9 +29,12 @@ namespace SignalRWebPack
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Run(async (context) =>
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
+            app.UseSignalR(options =>
             {
-                await context.Response.WriteAsync("Hello World!");
+                options.MapHub<ChatHub>("/hub");
             });
         }
     }
