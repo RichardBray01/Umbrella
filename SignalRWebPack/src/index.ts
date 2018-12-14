@@ -16,6 +16,8 @@ const connection = new signalR.HubConnectionBuilder()
 connection.start().catch(err => document.write(err));
 
 connection.on("messageReceived", (username: string, message: string) => {
+    console.log('connection.on START');
+
     let messageContainer = document.createElement("div");
 
     messageContainer.innerHTML =
@@ -24,6 +26,9 @@ connection.on("messageReceived", (username: string, message: string) => {
     divMessages.appendChild(messageContainer);
     divMessages.scrollTop = divMessages.scrollHeight;
     paintCanvas();
+
+    console.log('connection.on END');
+
 });
 
 tbMessage.addEventListener("keyup", (e: KeyboardEvent) => {
@@ -55,7 +60,7 @@ function paintCanvas() {
         x: stage.getWidth() / 2,
         y: stage.getHeight() / 2,
         radius: 70,
-        fill: 'blue',
+        fill: 'yellow',
         stroke: 'black',
         strokeWidth: 4
     });

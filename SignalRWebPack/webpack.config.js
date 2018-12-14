@@ -4,10 +4,11 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-    entry: "./src/index.ts",
+    mode: 'development',
+    entry: { main: './src/index.ts' },
+    devtool: 'inline-source-map',
     output: {
         path: path.resolve(__dirname, "wwwroot"),
-        filename: "[name].[chunkhash].js",
         publicPath: "/"
     },
     resolve: {
@@ -17,7 +18,12 @@ module.exports = {
         rules: [
             {
                 test: /\.ts$/,
-                use: "ts-loader"
+                use: {
+                    loader: 'ts-loader',
+                    options: {
+                        transpileOnly: true //HMR doesn't work without this
+                    }
+                }
             },
             {
                 test: /\.css$/,
@@ -31,7 +37,6 @@ module.exports = {
             template: "./src/index.html"
         }),
         new MiniCssExtractPlugin({
-            filename: "css/[name].[chunkhash].css"
         })
     ]
 };
