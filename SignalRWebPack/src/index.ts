@@ -25,7 +25,7 @@ connection.on("messageReceived", (username: string, message: string) => {
 
     divMessages.appendChild(messageContainer);
     divMessages.scrollTop = divMessages.scrollHeight;
-    paintCanvas();
+    showGrid();
 
     console.log('connection.on END');
 
@@ -42,6 +42,46 @@ btnSend.addEventListener("click", send);
 function send() {
     connection.send("newMessage", username, tbMessage.value)
         .then(() => tbMessage.value = "");
+}
+
+function showGrid() {
+    var WIDTH = 3000;
+    var HEIGHT = 3000;
+    var NUMBER = 200;
+
+    var stage = new Konva.Stage({
+        container: 'container',
+        width: window.innerWidth,
+        height: window.innerHeight,
+    });
+
+    var layer = new Konva.Layer();
+    stage.add(layer);
+
+    function generateNode() {
+        return new Konva.Circle({
+            x: WIDTH * Math.random(),
+            y: HEIGHT * Math.random(),
+            radius: 50,
+            fill: 'red',
+            stroke: 'black'
+        });
+    }
+
+    for (var i = 0; i < NUMBER; i++) {
+        layer.add(generateNode());
+    }
+    layer.draw();
+
+    var scrollContainer = document.getElementById('scroll-container');
+    scrollContainer.addEventListener('scroll', function () {
+        var dx = scrollContainer.scrollLeft;
+        var dy = scrollContainer.scrollTop;
+        stage.container().style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+        stage.x(-dx);
+        stage.y(-dy);
+        stage.batchDraw();
+    });
 }
 
 function paintCanvas() {

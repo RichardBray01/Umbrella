@@ -2,7 +2,31 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>ASP.NET Core SignalR</title>
+    <title>Konva Canvas Scrolling Demo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #F0F0F0;
+            height: 100%;
+            overflow: auto;
+        }
+
+        #large-container {
+            width: 3000px;
+            height: 3000px;
+            overflow: hidden;
+        }
+
+        #scroll-container {
+            width: calc(100% - 22px);
+            height: calc(80vh - 22px);
+            overflow: auto;
+            margin: 10px;
+            border: 1px solid grey;
+        }
+    </style>
 <link href="/main.css" rel="stylesheet"></head>
 <body>
     <div id="divMessages" class="messages">
@@ -12,8 +36,10 @@
         <input id="tbMessage" class="input-zone-input" type="text" />
         <button id="btnSend">Send</button>
     </div>
-    <div id="divCanvas">
-
+    <div id="scroll-container">
+        <div id="large-container">
+            <div id="container"></div>
+        </div>
     </div>
 <script type="text/javascript" src="/main.js"></script></body>
 </html>

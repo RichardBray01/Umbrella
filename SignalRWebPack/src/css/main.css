@@ -11,12 +11,12 @@ html, body {
     align-items: center;
     display: flex;
     flex-direction: row;
-    margin: 10px;
+    margin: 3px;
 }
 
 .input-zone-input {
     flex: 1;
-    margin-right: 10px;
+    margin-right: 3px;
 }
 
 .message-author {
@@ -25,9 +25,9 @@ html, body {
 
 .messages {
     border: 1px solid #000;
-    margin: 10px;
-    max-height: 300px;
-    min-height: 300px;
+    margin: 3px;
+    max-height: 160px;
+    min-height: 100px;
     overflow-y: auto;
-    padding: 5px;
+    padding: 3px;
 }
