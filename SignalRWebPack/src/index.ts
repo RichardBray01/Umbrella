@@ -2,7 +2,7 @@
 
 import "./css/main.css";
 import * as signalR from "@aspnet/signalr";
-import { SupaGrid } from "./ts/grid";
+import { SuperGrid } from "./ts/grid";
 import { VirtualList } from "./js/vlist";
 
 var list = new VirtualList({
