@@ -15,8 +15,8 @@ export interface ISuperGridConfig {
 
 export class SuperGrid {
     private config: ISuperGridConfig;
-    public container: typeContainer;
-    private horizontalScroller: typeScrollbar;
+    private container: typeContainer;
+    private verticalScroller: typeScrollbar;
     private cachedItemsFactor: number;
     private lastRepaintY: number;
     private lastScrolled: number;
@@ -30,6 +30,12 @@ export class SuperGrid {
         this.lastRepaintY = 0;
         this.cachedItemsFactor = 3;
 
+        this.createVerticalScroller();
+        this.createContainer();
+        this.container.appendChild(this.verticalScroller);
+        this.container.addEventListener('scroll', this.onScroll);
+        this.renderChunk(this.container, 0);
+
         this.rmNodeInterval = setInterval(function () {
             if (Date.now() - this.lastScrolled > 100) {
                 var badNodes = document.querySelectorAll('[data-rm="1"]');
@@ -39,6 +45,8 @@ export class SuperGrid {
             }
         }, 300);
     }
+
+    getContainer(): typeContainer { return this.container; }
 
     onScroll(e) {
         const scrollTop: number = e.target.scrollTop; 
@@ -107,8 +115,8 @@ export class SuperGrid {
         cStyle.border = '1px solid black';
     }
     createVerticalScroller(): void {
-        this.horizontalScroller = document.createElement('div');
-        let sStyle: CSSStyleDeclaration = this.horizontalScroller.style;
+        this.verticalScroller = document.createElement('div');
+        let sStyle: CSSStyleDeclaration = this.verticalScroller.style;
         sStyle.opacity = '';
         sStyle.position = 'absolute';
         sStyle.top = '';
