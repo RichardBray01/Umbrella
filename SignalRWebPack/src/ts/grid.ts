@@ -122,6 +122,6 @@ export class SuperGrid {
         sStyle.top = '';
         sStyle.left = '';
         sStyle.width = '1px';
-        sStyle.height = this.config.cells.length * this.config.rowHeight + 'px';
+        sStyle.height = String(this.config.cells.length * this.config.rowHeight) + 'px';
     };
 };

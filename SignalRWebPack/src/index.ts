@@ -42,15 +42,16 @@ connection.start().catch(err => document.write(err));
 
 function buildGridConfig(): ISuperGridConfig {
     let config = <ISuperGridConfig>{};
-    config.gridWidth = 0;
-    config.gridHeight = 0;
+    config.gridWidth = window.innerWidth;
+    config.gridHeight = window.innerHeight;
     config.rowHeight = 30;
     config.cells = new Array<ICellContent>(TOTAL_ROWS);
 
     for (let i: number = 0; i < TOTAL_ROWS; i++) {
         config.cells[i] = <ICellContent>{ text: "row " + String(i) };
-        return config;
     }
+
+    return config;
 }
 
 connection.on("messageReceived", (username: string, message: string) => {
