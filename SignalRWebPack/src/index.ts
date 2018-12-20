@@ -2,8 +2,10 @@
 
 import "./css/main.css";
 import * as signalR from "@aspnet/signalr";
-import { SuperGrid } from "./ts/grid";
+import { SuperGrid, ISuperGridConfig, ICellContent } from "./ts/grid";
 import { VirtualList } from "./js/vlist";
+
+const TOTAL_ROWS: number = 100000;
 
 var list = new VirtualList({
     h: window.innerHeight,
@@ -16,8 +18,12 @@ var list = new VirtualList({
     }
 });
 
+let grid = new SuperGrid(buildGridConfig());
+document.body.appendChild(grid.container);
+
 list.container.classList.add("container");
 document.body.appendChild(list.container);
+
 
 const divMessages: HTMLDivElement = document.querySelector("#divMessages");
 const tbMessage: HTMLInputElement = document.querySelector("#tbMessage");
@@ -31,6 +37,22 @@ const connection = new signalR.HubConnectionBuilder()
 
 connection.start().catch(err => document.write(err));
 
+
+
+
+function buildGridConfig(): ISuperGridConfig {
+    let config = <ISuperGridConfig>{};
+    config.gridWidth = 0;
+    config.gridHeight = 0;
+    config.rowHeight = 30;
+    config.cells = new Array<ICellContent>(TOTAL_ROWS);
+
+    for (let i: number = 0; i < TOTAL_ROWS; i++) {
+        config.cells[i] = <ICellContent>{ text: "row " + String(i) };
+        return config;
+    }
+}
+
 connection.on("messageReceived", (username: string, message: string) => {
     console.log('connection.on START');
 
@@ -42,12 +64,10 @@ connection.on("messageReceived", (username: string, message: string) => {
     divMessages.appendChild(messageContainer);
     divMessages.scrollTop = divMessages.scrollHeight;
 
-    let a = new SupaGrid();
-    a.showGrid();
-
     console.log('connection.on END');
 
 });
+
 
 tbMessage.addEventListener("keyup", (e: KeyboardEvent) => {
     if (e.keyCode === 13) {

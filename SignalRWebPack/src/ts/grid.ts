@@ -2,20 +2,20 @@ type typeContainer = HTMLDivElement;
 type typeScrollbar = HTMLDivElement;
 type typeRow = HTMLDivElement;
 
-interface ICellContent {
+export interface ICellContent {
     text: string
 }
 
-interface ISuperGridConfig {
+export interface ISuperGridConfig {
     gridWidth: number,
     gridHeight: number,
     rowHeight: number,
-    cells: ReadonlyArray<ICellContent>
+    cells: Array<ICellContent>
 } 
 
 export class SuperGrid {
     private config: ISuperGridConfig;
-    private container: typeContainer;
+    public container: typeContainer;
     private horizontalScroller: typeScrollbar;
     private cachedItemsFactor: number;
     private lastRepaintY: number;
@@ -99,8 +99,8 @@ export class SuperGrid {
     createContainer():void {
         this.container = document.createElement('div');
         let cStyle: CSSStyleDeclaration = this.container.style;
-        cStyle.width = String(this.config.gridWidth);
-        cStyle.height = String(this.config.gridHeight);
+        cStyle.width = (this.config.gridWidth > 0) ? String(this.config.gridWidth) + 'px' : '100%';
+        cStyle.height = (this.config.gridHeight> 0) ? String(this.config.gridHeight) + 'px' : '100%';
         cStyle.overflow = 'auto';
         cStyle.position = 'relative';
         cStyle.padding = '';
