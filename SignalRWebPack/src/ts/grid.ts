@@ -21,7 +21,22 @@ export class SuperGrid {
     private lastRepaintY: number;
     private lastScrolled: number;
     private rmNodeInterval: number;
+
+    static readonly TOTAL_ROWS: number = 100000;
     
+    static setupConfig(): ISuperGridConfig {
+        let config = <ISuperGridConfig>{};
+        config.gridWidth = window.innerWidth - 100;
+        config.gridHeight = window.innerHeight - 250;
+        config.rowHeight = 30;
+        config.cells = new Array<ICellContent>(SuperGrid.TOTAL_ROWS);
+
+        for (let i: number = 0; i < SuperGrid.TOTAL_ROWS; i++) {
+            config.cells[i] = <ICellContent>{ text: "row " + String(i) };
+        }
+
+        return config;
+    }
 
     constructor(config: ISuperGridConfig) {
         this.config = config;
