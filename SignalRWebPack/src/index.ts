@@ -21,8 +21,8 @@ var list = new VirtualList({
 let grid = new SuperGrid(buildGridConfig());
 document.body.appendChild(grid.getContainer());
 
-list.container.classList.add("container");
-document.body.appendChild(list.container);
+//list.container.classList.add("container");
+//document.body.appendChild(list.container);
 
 
 const divMessages: HTMLDivElement = document.querySelector("#divMessages");

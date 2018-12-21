@@ -54,7 +54,7 @@ export class SuperGrid {
         const maxBuffer: number = numRowsOnScreen * this.config.rowHeight;
 
         if (Math.abs(scrollTop - this.lastRepaintY) > maxBuffer) {
-            const first: number = (scrollTop / this.config.rowHeight) - numRowsOnScreen;
+            const first: number = Math.floor(scrollTop / this.config.rowHeight) - numRowsOnScreen;
 
             this.renderChunk(this.container, first < 0 ? 0 : first);
 
