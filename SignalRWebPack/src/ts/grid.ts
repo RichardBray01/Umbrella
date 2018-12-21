@@ -33,7 +33,7 @@ export class SuperGrid {
         this.createVerticalScroller();
         this.createContainer();
         this.container.appendChild(this.verticalScroller);
-        this.container.addEventListener('scroll', this.onScroll);
+        this.container.addEventListener('scroll', this.onScroll.bind(this));
         this.renderChunk(this.container, 0);
 
         this.rmNodeInterval = setInterval(function () {
