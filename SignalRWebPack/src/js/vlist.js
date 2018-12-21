@@ -1,5 +1,22 @@
 
 'use strict';
+
+// usage ...
+//
+//var list = new VirtualList({
+//    h: window.innerHeight,
+//    itemHeight: 30,
+//    totalRows: 100000,
+//    generatorFn: function (row) {
+//        var el = document.createElement("div");
+//        el.innerHTML = "<p>ITEM " + row + "</p>";
+//        return el;
+//    }
+//});
+
+//list.container.classList.add("container");
+//document.body.appendChild(list.container);
+
 /**
  * Creates a virtually-rendered scrollable list.
  * @param {object} config
