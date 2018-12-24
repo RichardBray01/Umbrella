@@ -1,3 +1,5 @@
+import * as signalR from "@aspnet/signalr";
+
 type typeContainer = HTMLDivElement;
 type typeScrollbar = HTMLDivElement;
 type typeRow = HTMLDivElement;
@@ -21,6 +23,8 @@ export class SuperGrid {
     private lastRepaintY: number;
     private lastScrolled: number;
     private rmNodeInterval: number;
+    private readonly connection = new signalR.HubConnectionBuilder().withUrl("/hub").build();
+
 
     static readonly TOTAL_ROWS: number = 100000;
     
@@ -59,6 +63,12 @@ export class SuperGrid {
                 }
             }
         }, 300);
+
+        this.connection.start().catch(err => console.log(err));
+
+        this.connection.on("gridUpdate", (row: number, col: number, value: string) => {
+            console.log('gridUpdate message received');
+        });
     }
 
     getContainer(): typeContainer { return this.container; }
@@ -74,6 +84,8 @@ export class SuperGrid {
             this.renderChunk(this.container, first < 0 ? 0 : first);
 
             this.lastRepaintY = scrollTop;
+
+            this.connection.send("gridScrolled", String(first));
         }
 
         this.lastScrolled = Date.now();

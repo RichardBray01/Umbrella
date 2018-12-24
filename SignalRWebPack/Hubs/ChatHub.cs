@@ -9,5 +9,10 @@ namespace SignalRWebPack.Hubs
         {
             await Clients.All.SendAsync("messageReceived", username, message);
         }
+
+        public async Task GridScrolled(string topRow)
+        {
+            await Clients.All.SendAsync("gridUpdate", 1, 1, "value");
+        }
     }
 }

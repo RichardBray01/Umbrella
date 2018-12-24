@@ -44,6 +44,9 @@ export class MessagePanel {
     private sendMessage() {
         this.connection.send("newMessage", this.userID, this.tbMessage.value)
         .then(() => this.tbMessage.value = "");
+        let first: number = 777;
+        this.connection.send("gridScrolled", String(first));
+
 }
 
 }
