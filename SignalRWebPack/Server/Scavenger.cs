@@ -1,9 +1,12 @@
 using SignalRWebPack.Hubs;
+using SignalRWebPack.Models;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Linq;
+using System;
 
 namespace SignalRWebPack
 {
@@ -25,6 +28,15 @@ namespace SignalRWebPack
                 await _hubContext.Clients.All.SendAsync("messageReceived", hello, buddy);
 
                 await Task.Delay(5000);
+
+                using (var context = new UmbrellaContext())
+                {
+                    var assets = context.Asset.ToList();
+                    foreach (Asset a in assets)
+                    {
+                        Console.Write($"{a.Name}, {a.PriceLast}, {a.Volume}");
+                    }
+                }
             }
         }
     }
