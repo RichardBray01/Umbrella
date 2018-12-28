@@ -12,20 +12,27 @@ namespace SignalRWebPack
 {
     public class Scavenger : BackgroundService
     {
+         private readonly InboundQueue _inboundQueue;
         private readonly IHubContext<ChatHub> _hubContext;
         private readonly ILogger<Scavenger> _logger;
-        public Scavenger(IHubContext<ChatHub> hubContext, ILogger<Scavenger> logger)
+        public Scavenger(IHubContext<ChatHub> hubContext, ILogger<Scavenger> logger, InboundQueue queue)
         {
             _hubContext = hubContext;
             _logger = logger;
+            _inboundQueue = queue;
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                string hello = "hello";
-                string buddy = "buddy";
+                string hello = "timer";
+                string buddy = "ticked";
+                InboundMessage inbound;
                 await _hubContext.Clients.All.SendAsync("messageReceived", hello, buddy);
+                while(_inboundQueue.TryDequeue(out inbound))
+                {
+                    await _hubContext.Clients.All.SendAsync("messageReceived", inbound.Message);
+                }
 
                 await Task.Delay(5000);
 
