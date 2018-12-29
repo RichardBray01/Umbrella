@@ -1,4 +1,10 @@
 ﻿import * as signalR from "@aspnet/signalr";
+import * as signalRMsgPack from "@aspnet/signalr-protocol-msgpack";
+
+interface MessageDto {
+    UserName: string;
+    Message: string;
+}
 
 export class MessagePanel {
     private divMessages: HTMLDivElement;
@@ -6,7 +12,10 @@ export class MessagePanel {
     private btnSend: HTMLButtonElement;
     private doc: Document;
     private readonly userID = new Date().getTime();
-    private readonly connection = new signalR.HubConnectionBuilder().withUrl("/hub").build();
+    private readonly connection = new signalR.HubConnectionBuilder()
+        .withUrl("/hub")
+        .withHubProtocol(new signalRMsgPack.MessagePackHubProtocol())
+        .build();
 
     constructor(document: Document) {
 
@@ -17,13 +26,13 @@ export class MessagePanel {
 
         this.connection.start().catch(err => this.doc.write(err));
 
-        this.connection.on("messageReceived", (username: string, message: string) => {
+        this.connection.on("messageToClient", (data: MessageDto) => {
             console.log('connection.on START');
 
             let messageContainer = this.doc.createElement("div");
 
             messageContainer.innerHTML =
-                `<div class="message-author">${username}</div><div>${message}</div>`;
+                `<div class="message-author">${data.UserName}</div><div>${data.Message}</div>`;
 
             this.divMessages.appendChild(messageContainer);
             this.divMessages.scrollTop = this.divMessages.scrollHeight;
@@ -42,10 +51,8 @@ export class MessagePanel {
     }
 
     private sendMessage() {
-        this.connection.send("newMessage", this.userID, this.tbMessage.value)
+        this.connection.send("messageToServer", this.userID, this.tbMessage.value)
         .then(() => this.tbMessage.value = "");
-        let first: number = 777;
-        this.connection.send("gridScrolled", String(first));
 
 }
 
