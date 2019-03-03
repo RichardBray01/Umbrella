@@ -18,15 +18,15 @@ namespace SignalRWebPack.Hubs
             _inboundQueue = queue;
         }
 
-        public async Task MessageToServer(string username, string message)
+        public async Task PanelUserAction(string username, string message)
         {
-            await Clients.All.SendAsync("messageToClient", new MessageDto { UserName = username, Message = message } );
+            await Clients.All.SendAsync("panelUserActionAck", new MessageDto { UserName = username, Message = message } );
         }
 
         public async Task GridScrolled(string topRow)
         {
             _inboundQueue.Enqueue(new InboundMessage{ Message=topRow});
-            await Clients.All.SendAsync("gridUpdate", 1, 1, "value");
+            await Clients.All.SendAsync("gridScrolledAck", 1, 1, "value");
         }
     }
 }

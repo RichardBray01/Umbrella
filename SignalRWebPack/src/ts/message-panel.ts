@@ -11,7 +11,7 @@ export class MessagePanel {
     private tbMessage: HTMLInputElement;
     private btnSend: HTMLButtonElement;
     private doc: Document;
-    private readonly userID = new Date().getTime();
+    private readonly userID = new Date().getTime().toString();
     private readonly connection = new signalR.HubConnectionBuilder()
         .withUrl("/hub")
         .withHubProtocol(new signalRMsgPack.MessagePackHubProtocol())
@@ -26,8 +26,8 @@ export class MessagePanel {
 
         this.connection.start().catch(err => this.doc.write(err));
 
-        this.connection.on("messageToClient", (data: MessageDto) => {
-            console.log('connection.on START');
+        this.connection.on("panelUserActionAck", (data: MessageDto) => {
+            console.log('panelUserActionAck START');
 
             let messageContainer = this.doc.createElement("div");
 
@@ -37,7 +37,22 @@ export class MessagePanel {
             this.divMessages.appendChild(messageContainer);
             this.divMessages.scrollTop = this.divMessages.scrollHeight;
 
-            console.log('connection.on END');
+            console.log('panelUserActionAck END');
+
+        });
+
+        this.connection.on("serverDataUpdate", (data: MessageDto) => {
+            console.log('serverDataUpdate START');
+
+            let messageContainer = this.doc.createElement("div");
+
+            messageContainer.innerHTML =
+                `<div class="message-author">${data.UserName}</div><div>${data.Message}</div>`;
+
+            this.divMessages.appendChild(messageContainer);
+            this.divMessages.scrollTop = this.divMessages.scrollHeight;
+
+            console.log('serverDataUpdate END');
 
         });
 
@@ -51,7 +66,7 @@ export class MessagePanel {
     }
 
     private sendMessage() {
-        this.connection.send("messageToServer", this.userID, this.tbMessage.value)
+        this.connection.send("panelUserAction", this.userID, this.tbMessage.value)
         .then(() => this.tbMessage.value = "");
 
 }

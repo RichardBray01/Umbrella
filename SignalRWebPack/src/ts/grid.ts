@@ -66,8 +66,8 @@ export class SuperGrid {
 
         this.connection.start().catch(err => console.log(err));
 
-        this.connection.on("gridUpdate", (row: number, col: number, value: string) => {
-            console.log('gridUpdate message received');
+        this.connection.on("gridScrolledAck", (row: number, col: number, value: string) => {
+            console.log('gridScrolledAck message received');
         });
     }
 

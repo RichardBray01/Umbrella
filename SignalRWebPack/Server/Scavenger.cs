@@ -38,12 +38,12 @@ namespace SignalRWebPack
             {
                 while (_inboundQueue.TryDequeue(out InboundMessage inbound))
                 {
-                    await _hubContext.Clients.All.SendAsync("messageToClient", new MessageDto { UserName = "username", Message = inbound.Message });
+                    await _hubContext.Clients.All.SendAsync("serverDataUpdate", new MessageDto { UserName = "username", Message = inbound.Message });
                 }
 
                 await Task.Delay(5000);
 
-                await _hubContext.Clients.All.SendAsync("messageToClient", new MessageDto { UserName = "username", Message = "message" });
+                await _hubContext.Clients.All.SendAsync("serverDataUpdate", new MessageDto { UserName = "username", Message = "message" });
 
             }
         }
